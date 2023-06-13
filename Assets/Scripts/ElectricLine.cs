@@ -11,6 +11,11 @@ public class ElectricLine : MonoBehaviour
     [SerializeField] public float maxDistance = 5f;   // the maximum distance to check for nearby objects
     [SerializeField] float roundTo = 10f;
 
+    private void Start()
+    {
+        Application.targetFrameRate = 45;
+    }
+
     private void FixedUpdate()
     {
         if (isActive == true)
