@@ -10,14 +10,12 @@ public class ElectricLine : MonoBehaviour
     private Color activeColor = Color.red;
     [SerializeField] public float maxDistance = 5f;   // the maximum distance to check for nearby objects
     [SerializeField] float roundTo = 10f;
-    [SerializeField] GameObject ga;
 
     private void FixedUpdate()
     {
         if (isActive == true)
         {
             GetComponent<Renderer>().material.color = activeColor;
-            RemoveNearbyObjects();
         }
         if (isActive == false)
         {
@@ -26,37 +24,25 @@ public class ElectricLine : MonoBehaviour
 
 
     }
-    public List<GameObject> GetAllChilds(GameObject Go)
+    private void OnTriggerEnter2D(Collider2D otherCollider)
     {
-        List<GameObject> list = new List<GameObject>();
-        for (int i = 0; i < Go.transform.childCount; i++)
+        if (isActive == true && !otherCollider.gameObject.GetComponent<Item>().IsBurned())
         {
-            list.Add(Go.transform.GetChild(i).gameObject);
+            otherCollider.gameObject.GetComponent<Item>().Burn();
+            FindObjectOfType<Score>().AddToScore(5);
         }
-        return list;
     }
-    void RemoveNearbyObjects()
+    private void OnTriggerStay2D(Collider2D otherCollider)
     {
-        foreach (GameObject obj in GetAllChilds(FindObjectOfType<ObjSpawner>().gameObject))
+        if (isActive == true && !otherCollider.gameObject.GetComponent<Item>().IsBurned())
         {
-            float distance = Vector3.Distance(this.transform.position, obj.transform.position);
-            if (distance < maxDistance && !obj.GetComponent<Item>().IsBurned())
-            {
-                obj.GetComponent<Item>().Burn();
-                FindAnyObjectByType<Score>().AddToScore(RoundToNearestMultipleOfRundTo(100 - (distance / maxDistance * 100)));
-            }
-
+            otherCollider.gameObject.GetComponent<Item>().Burn();
+            float distance = Vector3.Distance(this.transform.position, otherCollider.transform.position);
+            FindObjectOfType<Score>().AddToScore(RoundToNearestMultipleOfRundTo(100 - (distance / maxDistance * 100)));
         }
-
     }
     public float RoundToNearestMultipleOfRundTo(float number)
     {
-        if (number >=15 && number<=16)
-        {
-            return 0;
-            //این کامنت فقط برای پاک شدن نوشته شده است...
-        }
-            
         float rounded = (float)Mathf.Round(number / roundTo) * roundTo;
         return rounded;
     }
