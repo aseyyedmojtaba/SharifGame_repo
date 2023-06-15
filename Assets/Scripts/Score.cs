@@ -13,9 +13,9 @@ public class Score : MonoBehaviour
     {
         text = GetComponent<TextMeshProUGUI>();
     }
-    public void AddToScore(float score)
+    public void AddToScore(int score)
     {
-        this.score += Convert.ToInt32(score);
+        this.score += score;
     }
     private void Update()
     {

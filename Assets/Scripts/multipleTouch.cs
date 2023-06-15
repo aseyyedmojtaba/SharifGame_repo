@@ -52,6 +52,7 @@ public class multipleTouch : MonoBehaviour
                 //    //some thing
                 //}
                 electricLine.GetComponent<ElectricLine>().SetActive(true);
+                this.GetComponent<SpriteChanger>().On();
             }
 
             ++i;
@@ -59,6 +60,7 @@ public class multipleTouch : MonoBehaviour
         if (!isTouched)
         {
             electricLine.GetComponent<ElectricLine>().SetActive(false);
+            this.GetComponent<SpriteChanger>().Off();
         }
     }
 
