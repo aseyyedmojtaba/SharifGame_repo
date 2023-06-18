@@ -8,15 +8,32 @@ public class LevelController : MonoBehaviour
     [SerializeField] float waitToLoad = 4f;
     [SerializeField] GameObject winLable;
     [SerializeField] GameObject loseLable;
+    [SerializeField] GameObject continueOfWin;
+    [SerializeField] GameObject retryOfLose;
+    [SerializeField] GameObject mainMenuOfLose;
+    [SerializeField] GameObject leftButton;
+    [SerializeField] GameObject rightButton;
     bool triggerEndLevel=false; //this is for controll to HandelWinCondition play one time in Update method
     private int aliveItemCounts;
     private bool timerFinished = false;
 
     private void Start()
     {
+        Time.timeScale = 1f;  //for starting point set time scale
+        SetupStarterThings();
+    }
+
+    private void SetupStarterThings()
+    {
         winLable.SetActive(false);
         loseLable.SetActive(false);
+        continueOfWin.SetActive(false);
+        retryOfLose.SetActive(false);
+        mainMenuOfLose.SetActive(false);
+        rightButton.GetComponent<multipleTouch>().enabled = true;
+        leftButton.GetComponent<multipleTouch>().enabled = true;
     }
+
     void Update()
     {
         if (timerFinished)
@@ -35,15 +52,27 @@ public class LevelController : MonoBehaviour
 
         GetComponent<AudioSource>().Play();
         winLable.SetActive(true);
+        rightButton.GetComponent<multipleTouch>().enabled = false;
+        leftButton.GetComponent<multipleTouch>().enabled = false;
         yield return new WaitForSeconds(waitToLoad);
-        FindObjectOfType<LevelLoader>().LoadeNextScene();
+        continueOfWin.SetActive(true);
     }
 
     public void HandleLoseCondition()
     {
-        loseLable.SetActive(true);
-        Time.timeScale = 0f;
+        StartCoroutine(PlayLoseCanvas());
     }
+
+    private IEnumerator PlayLoseCanvas()
+    {
+        loseLable.SetActive(true);
+        rightButton.GetComponent<multipleTouch>().enabled = false;
+        leftButton.GetComponent<multipleTouch>().enabled = false;
+        yield return new WaitForSeconds(waitToLoad);
+        retryOfLose.SetActive(true);
+        mainMenuOfLose.SetActive(true);
+    }
+
     public void SetTimerFinished()
     {
         timerFinished = true;

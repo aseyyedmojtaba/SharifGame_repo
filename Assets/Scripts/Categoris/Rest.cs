@@ -8,7 +8,6 @@ public class Rest : MonoBehaviour
     [SerializeField] float decreaseTime = 5f;
     [SerializeField] float decreaseCount = 5f;
     [SerializeField] float rest = 50f;
-
     void Start()
     {
         StartCoroutine(Decrease());
@@ -28,7 +27,6 @@ public class Rest : MonoBehaviour
         {
             //Debug.Log("game over");
         }
-
         GetComponent<Slider>().value = rest;
     }
 

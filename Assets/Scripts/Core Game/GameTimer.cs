@@ -7,6 +7,7 @@ public class GameTimer : MonoBehaviour
 {
     [Tooltip("Our lelel time in SECONDS")]
     [SerializeField] float levelTime = 120f;
+    [SerializeField] ClockHand hand;
     bool triggerdLevelFinishd = false;
 
     // Update is called once per frame
@@ -14,17 +15,21 @@ public class GameTimer : MonoBehaviour
     {
         if (triggerdLevelFinishd) { return; }
         GetComponent<Slider>().value = Time.timeSinceLevelLoad / levelTime;
+        hand.SetHandelRotation(Time.timeSinceLevelLoad / levelTime);
         bool timerFinished = Time.timeSinceLevelLoad >= levelTime;
         if (timerFinished)
         {
-            //FindObjectOfType<LevelController>().SetTimerFinished();
+            FindObjectOfType<LevelController>().SetTimerFinished();
             triggerdLevelFinishd = true;
             Debug.Log("TimeOut");
-            //var attackerSpawners = FindObjectsOfType<AttackerSpawner>();
-            //foreach (AttackerSpawner spawner in attackerSpawners)
-            //{
-            //    spawner.StopSpawning();
-            //}
+            var attackerSpawner = FindObjectOfType<ObjSpawner>();
+            attackerSpawner.StopSpawning();
         }
     }
+
+    public float GetTime()
+    {
+        return GetComponent<Slider>().value;
+    }
+
 }
