@@ -8,6 +8,7 @@ public class Fun : MonoBehaviour
     [SerializeField] float decreaseTime = 5f;
     [SerializeField] float decreaseCount = 5f;
     [SerializeField] float fun = 50f;
+    bool triggerdLevelFinishd = false;
 
     void Start()
     {
@@ -24,10 +25,18 @@ public class Fun : MonoBehaviour
 
     private void Update()
     {
-        if (fun > 80 || fun < 20)
+        if (triggerdLevelFinishd) { return; }
+        if (fun > 99 || fun < 1)
         {
-            //Debug.Log("game over");
+            FindObjectOfType<LevelController>().HandleLoseCondition();
+            Debug.Log("Lose By Fun");
+            triggerdLevelFinishd=true;
         }
+        else if (fun > 80 || fun < 20)
+        {
+            GetComponent<Animator>().SetBool("inDanger", true);
+        }
+        else { GetComponent<Animator>().SetBool("inDanger", false); }
 
         GetComponent<Slider>().value = fun;
     }
@@ -35,5 +44,9 @@ public class Fun : MonoBehaviour
     public void EffectFun(float effectFun)
     {
         fun += effectFun;
+    }
+    public void StopSlider()
+    {
+        StopAllCoroutines();
     }
 }

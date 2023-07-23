@@ -3,7 +3,8 @@ guid: 36ea14b0525455d4686cdbc0c23e46e4
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - burnVFX: {fileID: 2114600000632900043, guid: f035349109d68ce4688ae4e2b106f444, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

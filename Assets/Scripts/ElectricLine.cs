@@ -13,7 +13,7 @@ public class ElectricLine : MonoBehaviour
     private Animator animator;
     private AudioSource audioSource;
 
-
+    [SerializeField] GameObject burnVFX;
     [SerializeField] LineScore lineScore;
     [SerializeField] private float maxDistance = 5f;   // the maximum distance to check for nearby objects
     [SerializeField] private int roundTo = 10;
@@ -24,6 +24,7 @@ public class ElectricLine : MonoBehaviour
         Application.targetFrameRate = 45;
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
+        audioSource.volume = PlayerPrefsController.GetEffectVolume();
 
     }
     // Update is called once per frame
@@ -49,7 +50,7 @@ public class ElectricLine : MonoBehaviour
         if (isActive == true && !otherCollider.gameObject.GetComponent<Item>().IsBurned())
         {
             // Burn the other object and add to the score
-            otherCollider.gameObject.GetComponent<Item>().Burn();
+            otherCollider.gameObject.GetComponent<Item>().Burn(burnVFX);
             FindObjectOfType<Score>().AddToScore(5);
             lineScore.ShowThis(5);
         }
@@ -62,7 +63,7 @@ public class ElectricLine : MonoBehaviour
         if (isActive == true && !otherCollider.gameObject.GetComponent<Item>().IsBurned())
         {
             // Burn the other object and calculate the score based on its distance from the electric line
-            otherCollider.gameObject.GetComponent<Item>().Burn();
+            otherCollider.gameObject.GetComponent<Item>().Burn(burnVFX);
             float distance = Vector3.Distance(this.transform.position, otherCollider.transform.position);
             int score = RoundToNearestMultipleOfRundTo(100 - (distance / maxDistance * 100));
             FindObjectOfType<Score>().AddToScore(score);
@@ -82,5 +83,9 @@ public class ElectricLine : MonoBehaviour
     public void SetActive(bool active)
     {
         isActive = active;
+    }
+    public void PauseAudio()
+    {
+        audioSource.Pause();
     }
 }

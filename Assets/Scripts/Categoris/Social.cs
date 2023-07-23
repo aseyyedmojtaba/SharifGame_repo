@@ -8,7 +8,7 @@ public class Social : MonoBehaviour
     [SerializeField] float decreaseTime = 5f;
     [SerializeField] float decreaseCount = 5f;
     [SerializeField] float social = 50f;
-
+    bool triggerdLevelFinishd = false;
     void Start()
     {
         StartCoroutine(Decrease());
@@ -24,10 +24,18 @@ public class Social : MonoBehaviour
 
     private void Update()
     {
-        if (social > 80 || social < 20)
+        if (triggerdLevelFinishd) { return; }
+        if (social > 99 || social < 1)
         {
-            //Debug.Log("game over");
+            FindObjectOfType<LevelController>().HandleLoseCondition();
+            Debug.Log("Lose By Social");
+            triggerdLevelFinishd=true;
         }
+        else if (social > 80 || social < 20)
+        {
+            GetComponent<Animator>().SetBool("inDanger", true);
+        }
+        else { GetComponent<Animator>().SetBool("inDanger", false); }
 
         GetComponent<Slider>().value = social;
     }
@@ -35,5 +43,9 @@ public class Social : MonoBehaviour
     public void EffectSocial(float effectSocial)
     {
         social += effectSocial;
+    }
+    public void StopSlider()
+    {
+        StopAllCoroutines();
     }
 }

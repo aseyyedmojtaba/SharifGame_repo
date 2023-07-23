@@ -31,5 +31,9 @@ public class GameTimer : MonoBehaviour
     {
         return GetComponent<Slider>().value;
     }
+    public void StopSlider()
+    {
+        triggerdLevelFinishd = true;
+    }
 
 }

@@ -1,12 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LevelLoader : MonoBehaviour
 {
-    [SerializeField] float timeToWait = 3f;
+
+    [SerializeField] float timeToWait = 5f;
+    [SerializeField] TextMeshProUGUI warningText;
     int currentSceneIndex;
     // Start is called before the first frame update
     void Start()
@@ -51,6 +55,28 @@ public class LevelLoader : MonoBehaviour
     {
         Application.Quit();
         //UnityEditor.EditorApplication.isPlaying = false;
+    }
+    public void LoadIsland(int number)
+    {
+        String islandName = "Island " + number.ToString();
+        if (number > 1 )
+        {
+            StartCoroutine(WarningHandler());
+            return;
+        }
+        SceneManager.LoadScene(islandName);
+    }
+    IEnumerator WarningHandler()
+    {
+        warningText.text = " You Don't have access this island yet...";
+        yield return new WaitForSeconds(3f);
+        warningText.text = "";
+    }
+
+    public void LoadLevel(int number)
+    {
+        String levelName = "Level " + number.ToString();
+        SceneManager.LoadScene(levelName);
     }
 
 }

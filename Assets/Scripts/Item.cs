@@ -28,10 +28,13 @@ public class Item : MonoBehaviour
         }
     }
 
-    public void Burn()
+    public void Burn(GameObject burnVFX)
     {
         burned=true;
-        GetComponent<Renderer>().material.color = burnedColor;
+        Destroy(gameObject);
+        GameObject VFX = Instantiate(burnVFX, transform.position, Quaternion.Euler(-90,0,0));
+        Destroy(VFX,2f);
+
     }
 
     public bool IsBurned()

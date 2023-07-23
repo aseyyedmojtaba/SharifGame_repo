@@ -10,6 +10,7 @@ public class Hunger : MonoBehaviour
     [SerializeField] float decreaseTime = 5f;
     [SerializeField] float decreaseCount = 5f;
     [SerializeField] float hunger = 50f;
+    bool triggerdLevelFinishd = false;
 
     void Start()
     {
@@ -26,17 +27,28 @@ public class Hunger : MonoBehaviour
 
     private void Update()
     {
-        if (hunger > 80 || hunger < 20)
+        if (triggerdLevelFinishd) { return; }
+        if (hunger > 99 || hunger < 1)
         {
             FindObjectOfType<LevelController>().HandleLoseCondition();
-            //Debug.Log("game over");
+            Debug.Log("Lose By Hunger");
+            triggerdLevelFinishd=true;
         }
-
+        else if (hunger > 80 || hunger < 20)
+        {
+            GetComponent<Animator>().SetBool("inDanger", true);
+        }
+        else { GetComponent<Animator>().SetBool("inDanger", false); }
         GetComponent<Slider>().value = hunger;
     }
 
     public void EffectHunger(float effectHunger)
     {
         hunger += effectHunger;
+    }
+
+    public void StopSlider()
+    {
+        StopAllCoroutines();
     }
 }

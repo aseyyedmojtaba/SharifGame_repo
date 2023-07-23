@@ -46,5 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   volumeSlider: {fileID: 0}
   defaultVolume: 0.8
-  difficultySlider: {fileID: 0}
-  defaultDifficulty: 0.5
+  volumeEffectSlider: {fileID: 0}
+  defultEffectVolume: 0.8
